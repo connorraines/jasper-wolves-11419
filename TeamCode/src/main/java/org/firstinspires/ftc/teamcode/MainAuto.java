@@ -25,10 +25,9 @@ public class MainAuto extends LinearOpMode {
         // Execute trajectory actions
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, 0))
-                        .strafeTo(new Vector2d(0, 48))// Move forward 48 inches along the Y-axis
-                        // Strafe to new position
-                        // Move to a specific X, Y position
-                        .turn(Math.toRadians(90)) // Turn 90 degrees
+                        .strafeTo(new Vector2d(0, 48))
+                        
+                        .turn(Math.toRadians(90))
                         .build());
     }
 }
