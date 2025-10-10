@@ -2,32 +2,45 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-import org.firstinspires.ftc.teamcode.MecanumDrive;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.ftc.Actions;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "Main Auto", group = "Auto")
 public class MainAuto extends LinearOpMode {
-
     @Override
     public void runOpMode() throws InterruptedException {
-        // Initialize the drive system
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-        
-        // Wait for start
+        // Initialize the motor
+        DcMotor leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Servo mainServo = hardwareMap.get(Servo.class, "mainServo");
+
+        // Initialize the servo
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
         waitForStart();
 
-        if (isStopRequested()) return;
+        // Set motor power to 50%
+        leftFront.setPower(1);
 
-        // Execute trajectory actions
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(0, 0, 0))
-                        .strafeTo(new Vector2d(0, 48))
-                        
-                        .turn(Math.toRadians(90))
-                        .build());
+        mainServo.setPosition(1);
+        sleep(1000);
+
+        // Move the servo to position 0.5
+        mainServo.setPosition(0.5);
+
+        // Let the motor run for 10 seconds
+        sleep(10000);
+
+        mainServo.setPosition(0);
+
+        // Stop the motor
+        leftFront.setPower(0);
+
+        // Move the servo back to position 0
+        mainServo.setPosition(0);
+
+        telemetry.addData("Status", "Motor and Servo Test Complete");
+        telemetry.update();
     }
 }
