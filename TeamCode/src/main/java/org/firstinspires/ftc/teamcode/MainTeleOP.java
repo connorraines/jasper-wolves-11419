@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
+
 @TeleOp(name = "Omni-Directional Drive", group = "TeleOp")
 public class MainTeleOP extends LinearOpMode {
 
@@ -14,51 +16,71 @@ public class MainTeleOP extends LinearOpMode {
         DcMotor leftBack = hardwareMap.get(DcMotor.class, "leftBack");
         DcMotor rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         DcMotor rightBack = hardwareMap.get(DcMotor.class, "rightBack");
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DcMotor spinA = hardwareMap.get(DcMotor.class, "spinA");
+        spinA.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DcMotor spinB = hardwareMap.get(DcMotor.class, "spinB");
+        spinB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        telemetry.addData("Status", "Initialized");
         telemetry.update();
 
         waitForStart();
 
         while (opModeIsActive()) {
-            // Get joystick values
-            double y = -gamepad1.left_stick_y; // Forward/backward
-            double x = gamepad1.left_stick_x;  // Strafing
-            double rotation = gamepad1.right_stick_x; // Rotation
+            leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            // Map joystick inputs to robot movement
+            double axial = -gamepad1.left_stick_y;
+            double lateral = gamepad1.left_stick_x;
+            double yaw = gamepad1.right_stick_x;
 
-            // Calculate motor powers
-            double leftFrontPower = y + x + rotation;
-            double leftBackPower = y - x + rotation;
-            double rightBackPower = y + x - rotation;
-            double rightFrontPower = y - x - rotation;
+            // Dead zone to prevent unintended movement
+            double deadZone = 0.05;
+            if (Math.abs(axial) < deadZone) axial = 0;
+            if (Math.abs(lateral) < deadZone) lateral = 0;
+            if (Math.abs(yaw) < deadZone) yaw = 0;
 
-            // Normalize motor powers to keep them within [-1, 1]
-            double maxPower = Math.max(1.0, Math.abs(leftFrontPower));
-            maxPower = Math.max(maxPower, Math.abs(rightFrontPower));
-            maxPower = Math.max(maxPower, Math.abs(leftBackPower));
-            maxPower = Math.max(maxPower, Math.abs(rightBackPower));
+            // Combine the joystick requests for each axis-motion to determine each wheel's power
+            double frontLeftPower = axial + lateral + yaw;
+            double frontRightPower = (axial - lateral) - yaw;
+            double backLeftPower = (axial - lateral) + yaw;
+            double backRightPower = (axial + lateral) - yaw;
 
-            leftFrontPower /= maxPower;
-            rightFrontPower /= maxPower;
-            leftBackPower /= maxPower;
-            rightBackPower /= maxPower;
+            // Normalize the values so no wheel power exceeds 100%
+            double max = JavaUtil.maxOfList(JavaUtil.createListWith(Math.abs(frontLeftPower), Math.abs(frontRightPower), Math.abs(backLeftPower), Math.abs(backRightPower)));
+            if (max > 1) {
+                frontLeftPower = frontLeftPower / max;
+                frontRightPower = frontRightPower / max;
+                backLeftPower = backLeftPower / max;
+                backRightPower = backRightPower / max;
+            }
 
-            // Set motor powers
-            leftFront.setPower(leftFrontPower);
-            rightFront.setPower(rightFrontPower);
-            leftBack.setPower(leftBackPower);
-            rightBack.setPower(rightBackPower);
+            // Send calculated power to wheels
+            leftFront.setPower(frontLeftPower);
+            rightFront.setPower(frontRightPower);
+            leftBack.setPower(backLeftPower);
+            rightBack.setPower(backRightPower);
 
-            // Telemetry for debugging
-            telemetry.addData("LF Power", leftFrontPower);
-            telemetry.addData("RF Power", rightFrontPower);
-            telemetry.addData("LB Power", leftBackPower);
-            telemetry.addData("RB Power", rightBackPower);
+            // Show the elapsed game time and wheel power
+            telemetry.addData("Status", "Run Time: ");
+            telemetry.addData("Front left/Right", JavaUtil.formatNumber(frontLeftPower, 4, 2) + ", " + JavaUtil.formatNumber(frontRightPower, 4, 2));
+            telemetry.addData("Back  left/Right", JavaUtil.formatNumber(backLeftPower, 4, 2) + ", " + JavaUtil.formatNumber(backRightPower, 4, 2));
             telemetry.update();
+
+            if (gamepad1.x) {
+                spinA.setPower(1); // Turn the motor on
+                spinB.setPower(-1);
+            } else {
+                spinA.setPower(0); // Turn the motor off
+                spinB.setPower(0);
+            }
         }
     }
 }
