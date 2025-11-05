@@ -55,11 +55,6 @@ public class FoodTruckTeleOP extends LinearOpMode {
             rightFront.setPower(rightPower);
             rightBack.setPower(rightPower);
 
-            // Control for spin motors
-
-
-            // Control for entrance motor
-
             // Telemetry for debugging
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Left Power", leftPower);
