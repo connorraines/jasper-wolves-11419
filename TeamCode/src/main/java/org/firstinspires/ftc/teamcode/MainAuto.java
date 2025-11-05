@@ -2,33 +2,48 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-import org.firstinspires.ftc.teamcode.MecanumDrive;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.ftc.Actions;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "Main Auto", group = "Auto")
 public class MainAuto extends LinearOpMode {
-
     @Override
     public void runOpMode() throws InterruptedException {
-        // Initialize the drive system
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-        
-        // Wait for start
-        waitForStart();
+        // Initialize motors and servos
+        DcMotor leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        DcMotor leftBack = hardwareMap.get(DcMotor.class, "leftBack");
+        DcMotor rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        DcMotor rightBack = hardwareMap.get(DcMotor.class, "rightBack");
 
-        if (isStopRequested()) return;
 
-        // Execute trajectory actions
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(0, 0, 0))
-                        .strafeTo(new Vector2d(0, 48))// Move forward 48 inches along the Y-axis
-                        // Strafe to new position
-                        // Move to a specific X, Y position
-                        .turn(Math.toRadians(90)) // Turn 90 degrees
-                        .build());
+        // Set zero power behavior
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+
+    }
+    public void launchBall() {
+        // Code to launch a ball
+        DcMotor spinA = hardwareMap.get(DcMotor.class, "spinA");
+        spinA.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DcMotor spinB = hardwareMap.get(DcMotor.class, "spinB");
+        spinB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        spinA.setPower(1.0);
+        spinB.setPower(-1.0);
+        sleep(1000); // Spin up time
+        spinA.setPower(0);
+        spinB.setPower(0);
+    }
+    public void loadBall(){
+        DcMotor entrance = hardwareMap.get(DcMotor.class, "entrance");
+        entrance.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        entrance.setPower(1.0);
+        sleep(1000); // Loading time
+        entrance.setPower(0);
     }
 }
