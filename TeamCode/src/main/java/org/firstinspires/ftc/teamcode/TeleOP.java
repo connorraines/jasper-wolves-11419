@@ -90,6 +90,10 @@ public class TeleOP extends LinearOpMode {
             leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            spinA.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            spinB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            entrance.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             // Note: pushing stick forward gives negative value
             axial = -gamepad1.left_stick_y;

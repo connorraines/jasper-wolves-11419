@@ -22,9 +22,7 @@ public class FoodTruckTeleOP extends LinearOpMode {
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightBack = hardwareMap.get(DcMotor.class, "rightBack");
 
-        DcMotor spinA = hardwareMap.get(DcMotor.class, "spinA");
-        DcMotor spinB = hardwareMap.get(DcMotor.class, "spinB");
-        DcMotor entrance = hardwareMap.get(DcMotor.class, "entrance");
+
 
         // Set motor directions
         leftFront.setDirection(DcMotor.Direction.REVERSE);
@@ -32,8 +30,7 @@ public class FoodTruckTeleOP extends LinearOpMode {
         rightFront.setDirection(DcMotor.Direction.FORWARD);
         rightBack.setDirection(DcMotor.Direction.FORWARD);
 
-        spinA.setDirection(DcMotor.Direction.FORWARD);
-        spinB.setDirection(DcMotor.Direction.REVERSE);
+
 
         // Set zero power behavior
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -59,20 +56,9 @@ public class FoodTruckTeleOP extends LinearOpMode {
             rightBack.setPower(rightPower);
 
             // Control for spin motors
-            if (gamepad1.left_trigger > 0.5) {
-                spinA.setPower(1); // Turn the motor on
-                spinB.setPower(-1);
-            } else {
-                spinA.setPower(0); // Turn the motor off
-                spinB.setPower(0);
-            }
+
 
             // Control for entrance motor
-            if (gamepad1.left_bumper) {
-                entrance.setPower(1); // Turn the motor on
-            } else {
-                entrance.setPower(0); // Turn the motor off
-            }
 
             // Telemetry for debugging
             telemetry.addData("Status", "Run Time: " + runtime.toString());

@@ -25,9 +25,7 @@ public class MainAuto extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        waitForStart();
-        loadBall();
-        launchBall();
+
     }
     public void launchBall() {
         // Code to launch a ball
