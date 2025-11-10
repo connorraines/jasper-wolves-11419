@@ -38,7 +38,7 @@ class RedBackAuto extends LinearOpMode {
         telemetry.update();
         waitForStart();
         MainAuto.strafeTo(-12,38,0.5, -60,12, leftFront, leftBack, rightFront, rightBack);
-        MainAuto.loadBall();
+        MainAuto.loadBall(leftFront, leftBack, rightFront, rightBack);
         MainAuto.turn(1.6,0.5, leftFront, leftBack, rightFront, rightBack);
         MainAuto.strafeTo(-30,10,0.5, -12, 38, leftFront, leftBack, rightFront, rightBack);
         MainAuto.turn(-2.6, 0.5, leftFront, leftBack, rightFront, rightBack);
@@ -75,7 +75,7 @@ class BlueBackAuto extends LinearOpMode {
         telemetry.update();
         waitForStart();
         MainAuto.strafeTo(-12, -38, 0.5, -60, -12, leftFront, leftBack, rightFront, rightBack);
-        MainAuto.loadBall();
+        MainAuto.loadBall(leftFront, leftBack, rightFront, rightBack);
         MainAuto.turn(-1.6, 0.5, leftFront, leftBack, rightFront, rightBack);
         MainAuto.strafeTo(-30, -10, 0.5, -12, -38, leftFront, leftBack, rightFront, rightBack);
         MainAuto.turn(2.6, 0.5, leftFront, leftBack, rightFront, rightBack);
@@ -110,7 +110,7 @@ class RedFrontAuto extends LinearOpMode {
         telemetry.update();
         waitForStart();
         MainAuto.strafeTo(-12, 38, 0.5, 50, 12, leftFront, leftBack, rightFront, rightBack);
-        MainAuto.loadBall();
+        MainAuto.loadBall(leftFront, leftBack, rightFront, rightBack);
         MainAuto.turn(1.6, 0.5, leftFront, leftBack, rightFront, rightBack);
         MainAuto.strafeTo(-30, 10, 0.5, -12, 38, leftFront, leftBack, rightFront, rightBack);
         MainAuto.turn(-2.6, 0.5, leftFront, leftBack, rightFront, rightBack);
@@ -145,7 +145,7 @@ class BlueFrontAuto extends LinearOpMode {
         telemetry.update();
         waitForStart();
         MainAuto.strafeTo(-12, -38, 0.5, 50, -12, leftFront, leftBack, rightFront, rightBack);
-        MainAuto.loadBall();
+        MainAuto.loadBall(leftFront, leftBack, rightFront, rightBack);
         MainAuto.turn(-1.6, 0.5, leftFront, leftBack, rightFront, rightBack);
         MainAuto.strafeTo(-30, -10, 0.5, -12, -38, leftFront, leftBack, rightFront, rightBack);
         MainAuto.turn(2.6, 0.5, leftFront, leftBack, rightFront, rightBack);
@@ -209,11 +209,20 @@ public class MainAuto {
         spinA.setPower(0);
         spinB.setPower(0);
     }
-    public static void loadBall(){
+    public static void loadBall(DcMotor leftFront, DcMotor leftBack, DcMotor rightFront, DcMotor rightBack){
         DcMotor entrance = hardwareMap.get(DcMotor.class, "entrance");
         entrance.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         entrance.setPower(1.0);
+        //move forward
+        leftBack.setPower(1);
+        leftFront.setPower(1);
+        rightBack.setPower(1);
+        rightFront.setPower(1);
         sleep(1000); // Loading time
+        leftBack.setPower(0);
+        leftFront.setPower(0);
+        rightBack.setPower(0);
+        rightFront.setPower(0);
         entrance.setPower(0);
     }
     public static void strafeTo(double targetX, double targetY, double power, double currentX, double currentY, DcMotor leftFront, DcMotor leftBack, DcMotor rightFront, DcMotor rightBack) {
@@ -277,5 +286,4 @@ public class MainAuto {
         // Stop motors
 
     }
-
 }
