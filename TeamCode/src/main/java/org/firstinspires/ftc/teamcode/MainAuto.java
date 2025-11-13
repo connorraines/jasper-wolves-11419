@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.sun.tools.javac.Main;
 
 @Autonomous(name = "Red Back Auto", group = "Auto")
-class RedBackAuto extends LinearOpMode {
+public class RedBackAuto extends LinearOpMode {
     //add MainAuto's methods
 
     DcMotor leftFront;
@@ -48,7 +48,7 @@ class RedBackAuto extends LinearOpMode {
 
 }
 @Autonomous(name = "Blue Back Auto", group = "Auto")
-class BlueBackAuto extends LinearOpMode {
+public class BlueBackAuto extends LinearOpMode {
     //add MainAuto's methods
 
     DcMotor leftFront;
@@ -83,7 +83,7 @@ class BlueBackAuto extends LinearOpMode {
     }
 }
 @Autonomous(name = "Red Front Auto", group = "Auto")
-class RedFrontAuto extends LinearOpMode {
+public class RedFrontAuto extends LinearOpMode {
     //add MainAuto's methods
 
     DcMotor leftFront;
@@ -118,7 +118,7 @@ class RedFrontAuto extends LinearOpMode {
     }
 }
 @Autonomous(name = "Blue Front Auto", group = "Auto")
-class BlueFrontAuto extends LinearOpMode {
+public class BlueFrontAuto extends LinearOpMode {
     //add MainAuto's methods
 
     DcMotor leftFront;
