@@ -58,10 +58,8 @@ public class TeleOP extends LinearOpMode {
         spinB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         DcMotor entrance = hardwareMap.get(DcMotor.class, "entrance");
         entrance.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        CRServo intakeServo1 = hardwareMap.get(CRServo.class, "intakeServo1");
-        CRServo intakeServo2 = hardwareMap.get(CRServo.class, "intakeServo2");
-        CRServo outtakeServo1 = hardwareMap.get(CRServo.class, "outtakeServo1");
-        CRServo outtakeServo2 = hardwareMap.get(CRServo.class, "outtakeServo2");
+        CRServo transferServo1 = hardwareMap.get(CRServo.class, "intakeServo1");
+        CRServo transferServo2 = hardwareMap.get(CRServo.class, "intakeServo2");
 
 
         runtime = new ElapsedTime();
@@ -143,22 +141,13 @@ public class TeleOP extends LinearOpMode {
                 spinA.setPower(0); // Turn the motor off
                 spinB.setPower(0);
             }
-            if (gamepad1.right_bumper){
-                //make intake speed servos spin
-                intakeServo1.setPower(1);
-                intakeServo2.setPower(-1);
-            } else {
-                intakeServo1.setPower(0);
-                intakeServo2.setPower(0);
-
-            }
             if (gamepad1.right_trigger > 0.5){
                 //make outtake speed servos spin
-                outtakeServo1.setPower(-1);
-                outtakeServo2.setPower(1);
+                transferServo1.setPower(-1);
+                transferServo2.setPower(1);
             } else {
-                outtakeServo1.setPower(0);
-                outtakeServo2.setPower(0);
+                transferServo1.setPower(0);
+                transferServo2.setPower(0);
             }
         }
 

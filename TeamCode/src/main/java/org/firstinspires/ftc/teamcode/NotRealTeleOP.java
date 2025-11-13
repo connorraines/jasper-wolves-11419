@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
 @TeleOp(name = "Omni-Directional Drive", group = "TeleOp")
-public class MainTeleOP extends LinearOpMode {
+public class NotRealTeleOP extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
