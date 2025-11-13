@@ -58,8 +58,8 @@ public class TeleOP extends LinearOpMode {
         spinB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         DcMotor entrance = hardwareMap.get(DcMotor.class, "entrance");
         entrance.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        CRServo transferServo1 = hardwareMap.get(CRServo.class, "intakeServo1");
-        CRServo transferServo2 = hardwareMap.get(CRServo.class, "intakeServo2");
+        CRServo transferServo1 = hardwareMap.get(CRServo.class, "transferServo1");
+        CRServo transferServo2 = hardwareMap.get(CRServo.class, "transferServo2");
 
 
         runtime = new ElapsedTime();
